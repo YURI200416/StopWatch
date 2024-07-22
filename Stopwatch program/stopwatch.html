@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1 id = "title">Stopwatch</h1>
+
+    <div id = "container">
+        <div id = "time">
+            00:00:00
+        </div>
+
+        <div id = "controls">
+            <button id = "start_button" onclick = "starttimer()">Start</button>
+
+            <button id = "stop_button" onclick = "stoptimer()">Stop</button>
+
+            <button id = "reset_button" onclick = "resettimer()">Reset</button>
+
+        </div>
+
+        <div id = "logging_system">
+            <h2>Log 1:</h2>
+            <div id = "log1" style = "font-size: 2em">
+                00:00:00
+            </div>
+
+            <h2>Log 2:</h2>
+            <div id = "log2" style = "font-size: 2em">
+                00:00:00
+            </div>
+
+            <h2>Log 3:</h2>
+            <div id = "log3" style = "font-size: 2em">
+                00:00:00
+            </div>
+
+            <h2>Log 4:</h2>
+            <div id = "log4" style = "font-size: 2em">
+                00:00:00
+            </div>
+
+        </div>
+
+    </div>
+
+    <style>
+        #title{
+            text-align:center;
+            border: solid;
+            border-color: black;
+            background-color: gray;
+
+        }
+
+        #title:hover{
+            text-align:center;
+            border: solid;
+            border-color: black;
+            background-color: green;
+            filter: brightness(150%);
+        }
+
+        #start_button{
+            width: 100px;
+            height: 50px;
+            border: 5px solid;
+            background-color: green;
+        }
+
+        #stop_button{
+            width: 100px;
+            height: 50px;
+            border: 5px solid;
+            background-color: red;
+        }
+
+        #reset_button{
+            width: 100px;
+            height: 50px;
+            border: 5px solid;
+            background-color: blue;
+        }
+
+        #start_button:hover{
+            width: 100px;
+            height: 50px;
+            border: 5px solid;
+            background-color: green;
+            filter: brightness(50%);
+        }
+
+        #stop_button:hover{
+            width: 100px;
+            height: 50px;
+            border: 5px solid;
+            background-color: red;
+            filter: brightness(50%);
+        }
+
+        #reset_button:hover{
+            width: 100px;
+            height: 50px;
+            border: 5px solid;
+            background-color: blue;
+            filter: brightness(50%);
+
+        }
+
+        #controls{
+            text-align: center;
+        }
+
+        #controls button{
+            color: white;
+            border: 5px solid black;
+        }
+        #container{
+            text-align:center;
+            
+        }
+        #time{
+            text-align:center;
+            font-size: 5em;
+        }
+        body{
+            background-color: #D3D3D3;
+        }
+
+    </style>
+
+    <script>
+        const display = document.getElementById("time");
+        let timer = null;
+        let start_time = 0;
+        let running_time = 0;
+        let isRunning = false;
+        let log_count = 1;
+
+
+
+        function starttimer(){
+            if (!isRunning){
+                start_time = Date.now() - running_time;
+                timer = setInterval(update, 10);
+                isRunning = true;
+            }
+
+
+        }
+        
+        function stoptimer(){
+
+            if (isRunning){
+                clearInterval(timer);
+                running_time = Date.now() - start_time;
+                isRunning = false;
+            }
+
+
+        }
+
+        function resettimer(){
+            clearInterval(timer);
+            start_time = 0;
+            running_time = 0;
+            isRunning = false;
+
+            switch(log_count){
+                case 1:
+                    const LOG_1 = document.getElementById("log1");
+                    LOG_1.textContent = display.textContent;
+                    break;
+                case 2:
+                    const LOG_2 = document.getElementById("log2");
+                    LOG_2.textContent = display.textContent;
+                    break;
+                case 3:
+                    const LOG_3 = document.getElementById("log3");
+                    LOG_3.textContent = display.textContent;
+                    break;
+                case 4:
+                    const LOG_4 = document.getElementById("log4");
+                    LOG_4.textContent = display.textContent;
+                    log_count = 0;
+                    break;
+            }
+            log_count ++;
+            display.textContent = "00:00:00";
+
+
+        }
+
+        function update(){
+            const current_time = Date.now();
+            running_time = current_time - start_time;
+
+            let hours = Math.floor(running_time /(1000 * 60 * 60));
+            let minutes = Math.floor(running_time / (1000 * 60) % 60);
+            let seconds = Math.floor(running_time / 1000 % 60)
+
+            hours = String(hours).padStart(2, "0");
+            minutes = String(minutes).padStart(2, "0");
+            seconds = String(seconds).padStart(2, "0");
+
+            display.textContent = `${hours}:${minutes}:${seconds}`;
+
+
+        }
+
+
+    </script>
+
+
+
+    
+</body>
+</html>
